@@ -2,7 +2,7 @@ import dataclasses
 import logging
 from pathlib import Path
 from typing import Optional
-
+import os
 import numpy as np
 import torch
 from colorlog import ColoredFormatter
@@ -17,6 +17,7 @@ from mmaudio.model.utils.features_utils import FeaturesUtils
 from mmaudio.utils.download_utils import download_model_if_needed
 
 log = logging.getLogger()
+base_model_path=Path(os.environ.get("MMAUDIO_MODEL_PATH", "/opt/models/mmaudio"))
 
 
 @dataclasses.dataclass
@@ -36,36 +37,36 @@ class ModelConfig:
             return CONFIG_44K
 
     def download_if_needed(self):
-        download_model_if_needed(self.model_path)
-        download_model_if_needed(self.vae_path)
+        download_model_if_needed(  self.model_path)
+        download_model_if_needed( self.vae_path)
         if self.bigvgan_16k_path is not None:
-            download_model_if_needed(self.bigvgan_16k_path)
-        download_model_if_needed(self.synchformer_ckpt)
+            download_model_if_needed( self.bigvgan_16k_path)
+        download_model_if_needed( self.synchformer_ckpt)
 
 
 small_16k = ModelConfig(model_name='small_16k',
-                        model_path=Path('./weights/mmaudio_small_16k.pth'),
-                        vae_path=Path('./ext_weights/v1-16.pth'),
-                        bigvgan_16k_path=Path('./ext_weights/best_netG.pt'),
+                        model_path=base_model_path/'./weights/mmaudio_small_16k.pth',
+                        vae_path=base_model_path/'./ext_weights/v1-16.pth',
+                        bigvgan_16k_path=base_model_path/'./ext_weights/best_netG.pt',
                         mode='16k')
 small_44k = ModelConfig(model_name='small_44k',
-                        model_path=Path('./weights/mmaudio_small_44k.pth'),
-                        vae_path=Path('./ext_weights/v1-44.pth'),
+                        model_path=base_model_path/'./weights/mmaudio_small_44k.pth',
+                        vae_path=base_model_path/'./ext_weights/v1-44.pth',
                         bigvgan_16k_path=None,
                         mode='44k')
 medium_44k = ModelConfig(model_name='medium_44k',
-                         model_path=Path('./weights/mmaudio_medium_44k.pth'),
-                         vae_path=Path('./ext_weights/v1-44.pth'),
+                         model_path=base_model_path/'./weights/mmaudio_medium_44k.pth',
+                         vae_path=base_model_path/'./ext_weights/v1-44.pth',
                          bigvgan_16k_path=None,
                          mode='44k')
 large_44k = ModelConfig(model_name='large_44k',
-                        model_path=Path('./weights/mmaudio_large_44k.pth'),
-                        vae_path=Path('./ext_weights/v1-44.pth'),
+                        model_path=base_model_path/'./weights/mmaudio_large_44k.pth',
+                        vae_path=base_model_path/'./ext_weights/v1-44.pth',
                         bigvgan_16k_path=None,
                         mode='44k')
 large_44k_v2 = ModelConfig(model_name='large_44k_v2',
-                           model_path=Path('./weights/mmaudio_large_44k_v2.pth'),
-                           vae_path=Path('./ext_weights/v1-44.pth'),
+                           model_path=base_model_path/'./weights/mmaudio_large_44k_v2.pth',
+                           vae_path=base_model_path/'./ext_weights/v1-44.pth',
                            bigvgan_16k_path=None,
                            mode='44k')
 all_model_cfg: dict[str, ModelConfig] = {
