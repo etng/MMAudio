@@ -27,7 +27,7 @@ class ModelConfig:
     vae_path: Path
     bigvgan_16k_path: Optional[Path]
     mode: str
-    synchformer_ckpt: Path = Path('./ext_weights/synchformer_state_dict.pth')
+    synchformer_ckpt: Path = Path(base_model_path/'./ext_weights/synchformer_state_dict.pth')
 
     @property
     def seq_cfg(self) -> SequenceConfig:
